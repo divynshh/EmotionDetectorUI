@@ -1,27 +1,41 @@
+<h2 class="title"> Mental Health Predictor</h2>
 
 <div>
-<webcam [height]="400" 
-        [width]="1000" 
-        [trigger]="triggerObservable"
-            (imageCapture)="handleImage($event)">
- </webcam>
+  <mat-card>
+    <mat-card-content >
+      <div>
+              <webcam [height]="400" [width]="1000" [trigger]="triggerObservable" (imageCapture)="handleImage($event)">
+      </webcam>
+      </div>
+      <!-- <webcam (initError)="handleInitError($event)"></webcam> -->
 
-
- <!-- <webcam (initError)="handleInitError($event)"></webcam> -->
-
- <button class="actionBtn" (click)="triggerSnapshot();">
-  Click Here and take the Shot</button>
-
-<div class="snapshot" *ngIf="webcamImage">
-<h2>Here is your image!</h2>
-<img [src]="webcamImage.imageAsDataUrl"/>
-
+      <button class="actionBtn" mat-raised-button  (click)="triggerSnapshot();">
+        Click Here and take the Shot</button>
+        <br><br>
+      <div class="snapshot" *ngIf="webcamImage">
+        <h2>Here is your image!</h2>
+        <img [src]="webcamImage.imageAsDataUrl" />
+        </div>
+    </mat-card-content>
+  </mat-card>
 </div>
 
-<div style="text-align:center;margin-top: 200px;" >
-  <button (click)="initiateRecording()" class="btn btn-primary" *ngIf="!recording" style="cursor: pointer;background-color: green;color: white;font-size: 40px;"> Start Recording </button>
-  <button (click)="stopRecording()" class="btn btn-danger" *ngIf="recording" style="cursor: pointer;background-color: red;color: white;font-size: 40px;"> Stop Recording </button>
-  <audio controls="" *ngIf="url">
-  <source [src]="sanitize(url)" type="audio/wav">
-  </audio>
-  </div>
+<br><br>
+<mat-card>
+
+  <mat-card-content>
+
+    <div style="text-align:left;" >
+      <button  mat-raised-button (click)="initiateRecording()" class="btn btn-primary" *ngIf="!recording" > Start Recording </button>
+      <button  mat-raised-button (click)="stopRecording()" class="btn btn-danger" *ngIf="recording" > Stop Recording </button>
+     
+      <audio controls="" *ngIf="url">
+      <source [src]="sanitize(url)" type="audio/wav">
+      </audio>
+      </div>
+
+  </mat-card-content>
+</mat-card>
+
+<!-- style="cursor: pointer;background-color: green;color: white;font-size: 40px;" -->
+<!-- style="cursor: pointer;background-color: red;color: white;font-size: 40px;"   -->
