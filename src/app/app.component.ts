@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import {WebcamImage, WebcamInitError} from 'ngx-webcam';
 import {Subject, Observable} from 'rxjs';
+import { HttpClient, HttpEvent, HttpErrorResponse, HttpEventType, HttpHeaders } from  '@angular/common/http';  
 declare var $: any;
 import * as RecordRTC from 'recordrtc';
 import { DomSanitizer } from '@angular/platform-browser';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -16,9 +18,11 @@ export class AppComponent {
 
   public webcamImage: WebcamImage = null;
   public trigger: Subject<void> = new Subject<void>();
+  blob: any;
   
   triggerSnapshot(): void {
    this.trigger.next();
+   this.uploadForm.get('image').setValue(this.webcamImage);
   }
 
   handleImage(webcamImage: WebcamImage): void {
@@ -43,7 +47,14 @@ recording = false;
 //URL of Blob
 url;
 error;
-constructor(private domSanitizer: DomSanitizer) {}
+uploadForm: FormGroup; 
+constructor(private domSanitizer: DomSanitizer,private httpClient: HttpClient,private formBuilder: FormBuilder) {}
+  
+ngOnInit(): void {
+    this.uploadForm = this.formBuilder.group({
+      image: ['']
+    });
+  }
 sanitize(url: string) {
 return this.domSanitizer.bypassSecurityTrustUrl(url);
 }
@@ -51,6 +62,7 @@ return this.domSanitizer.bypassSecurityTrustUrl(url);
 * Start recording.
 */
 initiateRecording() {
+  this.url = null;
 this.recording = true;
 let mediaConstraints = {
 video: false,
@@ -78,21 +90,42 @@ stopRecording() {
 this.recording = false;
 this.record.stop(this.processRecording.bind(this));
 }
-/**
-* processRecording Do what ever you want with blob
-* @param  {any} blob Blog
-*/
+
 processRecording(blob) {
+  this.blob=blob;
 this.url = URL.createObjectURL(blob);
 console.log("blob", blob);
 console.log("url", this.url);
 }
-/**
-* Process Error.
-*/
+
 errorCallback(error) {
 this.error = 'Can not play audio in your browser';
 }
+ public uploadimage(){
+  const formData = new FormData();
+  formData.append('image', this.webcamImage.imageAsDataUrl);
+  
+  this.httpClient.post<any>('http://127.0.0.1:5000/captureimage', formData).subscribe(
+    (res) => console.log(res),
+    (err) => console.log(err)
+  );
+ }
 
+ public uploadaudio(){
+  const formData = new FormData();
+  formData.append('file', this.blob);
+  
+  this.httpClient.post<any>('http://127.0.0.1:5000/captureaudio', formData).subscribe(
+    (res) => console.log(res),
+    (err) => console.log(err)
+  );
+ }
+
+ getPredictedEmotion(){
+
+  this.uploadimage();
+  this.uploadaudio();
+
+ }
 
 }

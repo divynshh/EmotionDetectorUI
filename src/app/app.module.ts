@@ -8,6 +8,8 @@ import { AppComponent } from './app.component';
 
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
+import { HttpClientModule } from '@angular/common/http';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -17,6 +19,9 @@ import {MatCardModule} from '@angular/material/card';
     BrowserModule,
     AppRoutingModule,
     WebcamModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    FormsModule,
     MatButtonModule,
     MatCardModule
   ],
