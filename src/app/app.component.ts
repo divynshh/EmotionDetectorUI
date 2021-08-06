@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, AbstractType } from '@angular/core';
 import {WebcamImage, WebcamInitError} from 'ngx-webcam';
 import {Subject, Observable} from 'rxjs';
 import { HttpClient, HttpEvent, HttpErrorResponse, HttpEventType, HttpHeaders } from  '@angular/common/http';  
@@ -15,10 +15,13 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class AppComponent {
   title = 'emotionDetectorUI';
 
-
+  takeImg = true;
+  imgResponse : any;
+  audioResposne : any;
   public webcamImage: WebcamImage = null;
   public trigger: Subject<void> = new Subject<void>();
   blob: any;
+  showResultBtn : boolean = false;
   
   triggerSnapshot(): void {
    this.trigger.next();
@@ -26,6 +29,7 @@ export class AppComponent {
   }
 
   handleImage(webcamImage: WebcamImage): void {
+    this.takeImg=false;
     console.info('Saved webcam image', webcamImage);
     this.webcamImage = webcamImage;
    }
@@ -89,6 +93,7 @@ this.record.record();
 stopRecording() {
 this.recording = false;
 this.record.stop(this.processRecording.bind(this));
+this.showResults()
 }
 
 processRecording(blob) {
@@ -105,20 +110,31 @@ this.error = 'Can not play audio in your browser';
   const formData = new FormData();
   formData.append('image', this.webcamImage.imageAsDataUrl);
   
-  this.httpClient.post<any>('http://127.0.0.1:5000/captureimage', formData).subscribe(
-    (res) => console.log(res),
-    (err) => console.log(err)
-  );
+  this.httpClient.post<any>('http://127.0.0.1:5000/captureimage', formData).subscribe((response: any) => {
+
+    // (res) => console.log(res),
+    // (err) => console.log(err)
+
+    this.imgResponse = response;
+    console.log(this.imgResponse)
+
+  });
+   
  }
 
  public uploadaudio(){
   const formData = new FormData();
   formData.append('file', this.blob);
   
-  this.httpClient.post<any>('http://127.0.0.1:5000/captureaudio', formData).subscribe(
-    (res) => console.log(res),
-    (err) => console.log(err)
-  );
+  this.httpClient.post<any>('http://127.0.0.1:5000/captureaudio', formData).subscribe((response: any) => {
+    // (res) => console.log(res),
+    // (err) => console.log(err)
+
+    this.audioResposne = response;
+    console.log(this.audioResposne)
+    
+  });
+
  }
 
  getPredictedEmotion(){
@@ -126,6 +142,16 @@ this.error = 'Can not play audio in your browser';
   this.uploadimage();
   this.uploadaudio();
 
+ }
+
+ takeImgAgain() {
+   this.takeImg = true;
+ }
+
+ showResults(){ 
+   if(this.recording === false && this.takeImg === false) {
+     this.showResultBtn = true;
+   }
  }
 
 }
