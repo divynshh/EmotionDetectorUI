@@ -2,20 +2,29 @@
 
 <div>
   <mat-card>
-    <mat-card-content >
-      <div>
-              <webcam [height]="400" [width]="1000" [trigger]="triggerObservable" (imageCapture)="handleImage($event)">
-      </webcam>
+    <mat-card-content *ngIf="takeImg">
+      <div style="text-align: center;">
+        <webcam [height]="400" [width]="1000" [trigger]="triggerObservable" (imageCapture)="handleImage($event)">
+        </webcam>
       </div>
       <!-- <webcam (initError)="handleInitError($event)"></webcam> -->
 
-      <button class="actionBtn" mat-raised-button  (click)="triggerSnapshot();">
-        Click Here and take the Shot</button>
-        <br><br>
-      <div class="snapshot" *ngIf="webcamImage">
+      <div style="text-align: center; margin-top: 20px;">
+        <button class="actionBtn" mat-raised-button (click)="triggerSnapshot();">
+          Click Here and take the Shot</button>
+         </div>
+      <br><br>
+    </mat-card-content>
+    <mat-card-content  *ngIf="!takeImg">
+      <div class="snapshot" *ngIf="webcamImage" style="text-align: center;">
         <h2>Here is your image!</h2>
         <img [src]="webcamImage.imageAsDataUrl" />
-        </div>
+      </div>
+      <div style="text-align: center;">
+        <button class="actionBtn" mat-raised-button (click)="takeImgAgain();">
+
+          Click Here to take Another Shot</button> 
+      </div>
     </mat-card-content>
   </mat-card>
 </div>
@@ -25,20 +34,29 @@
 
   <mat-card-content>
 
-    <div style="text-align:left;" >
-      <button  mat-raised-button (click)="initiateRecording()" class="btn btn-primary" *ngIf="!recording" > Start Recording </button>
-      <button  mat-raised-button (click)="stopRecording()" class="btn btn-danger" *ngIf="recording" > Stop Recording </button>
-     
+    <div style="text-align:center;">
+      <button mat-raised-button (click)="initiateRecording()" class="btn btn-primary" *ngIf="!recording"> Start
+        Recording </button>
+      <button mat-raised-button (click)="stopRecording()" class="btn btn-danger" *ngIf="recording"> Stop Recording
+      </button>
+
       <audio controls="" *ngIf="url">
-      <source [src]="sanitize(url)" type="audio/wav">
+        <source [src]="sanitize(url)" type="audio/wav">
       </audio>
-      </div>
+    </div>
 
   </mat-card-content>
-
-
-  <button (click)="getPredictedEmotion()">Get Result</button>
 </mat-card>
+
+<div *ngIf="showResultBtn"> 
+
+</div>
+
+<div style="text-align: center; margin-top: 20px;">
+  <button mat-raised-button (click)="getPredictedEmotion()">Get Result</button>
+</div>
+    
+
 
 <!-- style="cursor: pointer;background-color: green;color: white;font-size: 40px;" -->
 <!-- style="cursor: pointer;background-color: red;color: white;font-size: 40px;"   -->
