@@ -12,10 +12,10 @@
       <div style="text-align: center; margin-top: 20px;">
         <button class="actionBtn" mat-raised-button (click)="triggerSnapshot();">
           Click Here and take the Shot</button>
-         </div>
+      </div>
       <br><br>
     </mat-card-content>
-    <mat-card-content  *ngIf="!takeImg">
+    <mat-card-content *ngIf="!takeImg">
       <div class="snapshot" *ngIf="webcamImage" style="text-align: center;">
         <h2>Here is your image!</h2>
         <img [src]="webcamImage.imageAsDataUrl" />
@@ -23,7 +23,7 @@
       <div style="text-align: center;">
         <button class="actionBtn" mat-raised-button (click)="takeImgAgain();">
 
-          Click Here to take Another Shot</button> 
+          Click Here to take Another Shot</button>
       </div>
     </mat-card-content>
   </mat-card>
@@ -48,14 +48,23 @@
   </mat-card-content>
 </mat-card>
 
-<div *ngIf="showResultBtn"> 
+<div *ngIf="showResultBtn">
 
 </div>
 
 <div style="text-align: center; margin-top: 20px;">
   <button mat-raised-button (click)="getPredictedEmotion()">Get Result</button>
 </div>
-    
+
+
+
+
+<div *ngIf="showChart" class="col-sm-4 text-center" style="width:500px;height:600px;">
+  <h2 class="text-center">Emotions Detected</h2>
+  <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+    [plugins]="barChartPlugins" [legend]="barChartLegend" [colors]="barChartColors" [chartType]="barChartType">
+  </canvas>
+</div>
 
 
 <!-- style="cursor: pointer;background-color: green;color: white;font-size: 40px;" -->
