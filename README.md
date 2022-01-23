@@ -1,27 +1,39 @@
 # EmotionDetectorUI
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.4.
+Emotion Detector UI is built on Angular , The webapp uses the webcam and microphone which captures and face image and a speech sample and passes it to a python -flask server, which is fed to a ML trained model and then it returns a matrix of emotion .
 
-## Development server
+# Prerequisites
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Both the Angular CLI and generated project have dependencies that require Node 14.17.0 or higher, together with NPM 7.17.0 or higher.
+## Angular Installation
+### Install Globally
 
-## Code scaffolding
+```bash
+npm install -g @angular/cli
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## Build
+## Get the Code
+```
+git clone 'https://github.optum.com/dchauh24/EmotionDetectorUI'
+cd EmotionDetectorUI
+npm i
+npm install --save @angular/material @angular/cdk
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+## Run the flask app to enable web service. 
+```
+git clone 'https://github.optum.com/dchauh24/EmotionDetection-Backend'
+export FLASK_APP=flask_app
+flask run --host=0.0.0.0
+```
 
-## Running unit tests
+## Running the app
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run `npm start` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
-## Further help
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+
